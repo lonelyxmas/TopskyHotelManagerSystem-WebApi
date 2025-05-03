@@ -1,0 +1,18 @@
+namespace EOM.TSHotelManagement.Common.Contract
+{
+    public class ReadCardCodeOutputDto
+    {
+        public long Id { get; set; }
+
+        public string Province { get; set; }
+
+        public string City { get; set; }
+
+        public string District { get; set; }
+
+        public string AreaCode { get; set; }
+    }
+}
+
+
+

@@ -8,22 +8,24 @@ EXPOSE 8080
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["topsky-hotel-manager-system-web-api/EOM.TSHotelManager.WebApi/EOM.TSHotelManager.WebApi.csproj", "topsky-hotel-manager-system-web-api/EOM.TSHotelManager.WebApi/"]
-COPY ["topsky-hotel-manager-system-web-api/EOM.TSHotelManager.Shared/EOM.TSHotelManager.Shared.csproj", "topsky-hotel-manager-system-web-api/EOM.TSHotelManager.Shared/"]
-COPY ["topsky-hotel-manager-system-web-api/EOM.TSHotelManager.Application/EOM.TSHotelManager.Application.csproj", "topsky-hotel-manager-system-web-api/EOM.TSHotelManager.Application/"]
-COPY ["topsky-hotel-manager-system-web-api/EOM.TSHotelManager.Common.Core/EOM.TSHotelManager.Common.Core.csproj", "topsky-hotel-manager-system-web-api/EOM.TSHotelManager.Common.Core/"]
-COPY ["topsky-hotel-manager-system-web-api/EOM.TSHotelManager.Common.Util/EOM.TSHotelManager.Common.Util.csproj", "topsky-hotel-manager-system-web-api/EOM.TSHotelManager.Common.Util/"]
-COPY ["topsky-hotel-manager-system-web-api/EOM.TSHotelManager.EntityFramework/EOM.TSHotelManager.EntityFramework.csproj", "topsky-hotel-manager-system-web-api/EOM.TSHotelManager.EntityFramework/"]
-RUN dotnet restore "./topsky-hotel-manager-system-web-api/EOM.TSHotelManager.WebApi/EOM.TSHotelManager.WebApi.csproj"
+COPY ["TopskyHotelManagerSystem-WebApi/EOM.TSHotelManagement.WebApi/EOM.TSHotelManagement.WebApi.csproj", "TopskyHotelManagerSystem-WebApi/EOM.TSHotelManagement.WebApi/"]
+COPY ["TopskyHotelManagerSystem-WebApi/EOM.TSHotelManagement.Shared/EOM.TSHotelManagement.Shared.csproj", "TopskyHotelManagerSystem-WebApi/EOM.TSHotelManagement.Shared/"]
+COPY ["TopskyHotelManagerSystem-WebApi/EOM.TSHotelManagement.Application/EOM.TSHotelManagement.Application.csproj", "TopskyHotelManagerSystem-WebApi/EOM.TSHotelManagement.Application/"]
+COPY ["TopskyHotelManagerSystem-WebApi/EOM.TSHotelManagement.Common.Contract/EOM.TSHotelManagement.Common.Contract.csproj", "TopskyHotelManagerSystem-WebApi/EOM.TSHotelManagement.Common.Contract/"]
+COPY ["TopskyHotelManagerSystem-WebApi/EOM.TSHotelManagement.Common.Migration/EOM.TSHotelManagement.Common.Migration.csproj", "TopskyHotelManagerSystem-WebApi/EOM.TSHotelManagement.Common.Migration/"]
+COPY ["TopskyHotelManagerSystem-WebApi/EOM.TSHotelManagement.Common.Core/EOM.TSHotelManagement.Common.Core.csproj", "TopskyHotelManagerSystem-WebApi/EOM.TSHotelManagement.Common.Core/"]
+COPY ["TopskyHotelManagerSystem-WebApi/EOM.TSHotelManagement.Common.Util/EOM.TSHotelManagement.Common.Util.csproj", "TopskyHotelManagerSystem-WebApi/EOM.TSHotelManagement.Common.Util/"]
+COPY ["TopskyHotelManagerSystem-WebApi/EOM.TSHotelManagement.EntityFramework/EOM.TSHotelManagement.EntityFramework.csproj", "TopskyHotelManagerSystem-WebApi/EOM.TSHotelManagement.EntityFramework/"]
+RUN dotnet restore "./TopskyHotelManagerSystem-WebApi/EOM.TSHotelManagement.WebApi/EOM.TSHotelManagement.WebApi.csproj"
 COPY . .
-WORKDIR "/src/topsky-hotel-manager-system-web-api/EOM.TSHotelManager.WebApi"
-RUN dotnet build "./EOM.TSHotelManager.WebApi.csproj" -c $BUILD_CONFIGURATION -o /app/build
+WORKDIR "/src/TopskyHotelManagerSystem-WebApi/EOM.TSHotelManagement.WebApi"
+RUN dotnet build "./EOM.TSHotelManagement.WebApi.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./EOM.TSHotelManager.WebApi.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./EOM.TSHotelManagement.WebApi.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "EOM.TSHotelManager.WebApi.dll"]
+ENTRYPOINT ["dotnet", "EOM.TSHotelManagement.WebApi.dll"]
